@@ -1,0 +1,216 @@
+{
+  "schema": "BlueprintEditPlan/2",
+  "meta": {
+    "description": "The rewards data and the score game mode."
+  },
+  "assets": [
+    {
+      "asset": "/Game/Sample/Data/E_CoinType",
+      "create": {
+        "kind": "enum",
+        "enumerators": [
+          "Bronze",
+          "Gold"
+        ]
+      }
+    },
+    {
+      "asset": "/Game/Sample/Data/S_CoinReward",
+      "create": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "Points",
+            "type": {
+              "category": "int"
+            },
+            "default_value": "10"
+          },
+          {
+            "name": "Label",
+            "type": {
+              "category": "text"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "asset": "/Game/Sample/Data/DT_CoinRewards",
+      "create": {
+        "kind": "data_table",
+        "row_struct": "/Game/Sample/Data/S_CoinReward.S_CoinReward",
+        "rows": [
+          {
+            "Name": "Bronze",
+            "Points": 10,
+            "Label": "Bronze coin"
+          },
+          {
+            "Name": "Gold",
+            "Points": 50,
+            "Label": "Gold coin"
+          }
+        ]
+      }
+    },
+    {
+      "asset": "/Game/Sample/BP_ScoreGameMode",
+      "create": {
+        "kind": "blueprint",
+        "parent": "/Script/Engine.GameModeBase"
+      },
+      "ops": [
+        {
+          "op": "remove_node",
+          "node": {
+            "class": "K2Node_Event",
+            "member": "ReceiveBeginPlay"
+          },
+          "note": "the ghost event a new Blueprint gets"
+        },
+        {
+          "op": "remove_node",
+          "node": {
+            "class": "K2Node_Event",
+            "member": "ReceiveTick"
+          },
+          "note": "the ghost event a new Blueprint gets"
+        },
+        {
+          "op": "add_variable",
+          "name": "Score",
+          "type": {
+            "category": "int"
+          },
+          "default_value": "0",
+          "category": "Score",
+          "tooltip": "Points collected so far."
+        },
+        {
+          "op": "add_dispatcher",
+          "name": "OnScoreChanged",
+          "pins": [
+            {
+              "name": "NewScore",
+              "type": {
+                "category": "int"
+              }
+            }
+          ]
+        },
+        {
+          "op": "add_function",
+          "id": "add",
+          "name": "AddScore",
+          "inputs": [
+            {
+              "name": "Points",
+              "type": {
+                "category": "int"
+              }
+            }
+          ],
+          "category": "Score"
+        },
+        {
+          "op": "spawn_node",
+          "id": "get1",
+          "graph": "add",
+          "kind": "variable_get",
+          "variable": {
+            "name": "Score"
+          },
+          "pos": [
+            200,
+            200
+          ]
+        },
+        {
+          "op": "spawn_node",
+          "id": "sum",
+          "graph": "add",
+          "kind": "call_function",
+          "function": {
+            "owner": "/Script/Engine.KismetMathLibrary",
+            "name": "Add_IntInt"
+          },
+          "pos": [
+            400,
+            120
+          ]
+        },
+        {
+          "op": "spawn_node",
+          "id": "set",
+          "graph": "add",
+          "kind": "variable_set",
+          "variable": {
+            "name": "Score"
+          },
+          "pos": [
+            600,
+            0
+          ]
+        },
+        {
+          "op": "spawn_node",
+          "id": "get2",
+          "graph": "add",
+          "kind": "variable_get",
+          "variable": {
+            "name": "Score"
+          },
+          "pos": [
+            820,
+            160
+          ]
+        },
+        {
+          "op": "spawn_node",
+          "id": "notify",
+          "graph": "add",
+          "kind": "dispatcher",
+          "dispatcher": {
+            "name": "OnScoreChanged",
+            "action": "call"
+          },
+          "pos": [
+            1000,
+            0
+          ]
+        },
+        {
+          "op": "link",
+          "from": "@add.entry:then",
+          "to": "@set:execute"
+        },
+        {
+          "op": "link",
+          "from": "@get1:Score",
+          "to": "@sum:B"
+        },
+        {
+          "op": "link",
+          "from": "@add.entry:Points",
+          "to": "@sum:A"
+        },
+        {
+          "op": "link",
+          "from": "@sum:ReturnValue",
+          "to": "@set:Score"
+        },
+        {
+          "op": "link",
+          "from": "@set:then",
+          "to": "@notify:execute"
+        },
+        {
+          "op": "link",
+          "from": "@get2:Score",
+          "to": "@notify:NewScore"
+        }
+      ]
+    }
+  ]
+}

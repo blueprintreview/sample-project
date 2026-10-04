@@ -1,0 +1,8 @@
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+# The BlueprintExporter and BlueprintEditAutomation plugins, if you install them (see README.md).
+Plugins/
+.vs/
+*.sln

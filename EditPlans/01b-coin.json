@@ -1,0 +1,283 @@
+{
+  "schema": "BlueprintEditPlan/2",
+  "meta": {
+    "description": "The coin: collision, mesh, its type and points, and the pick-up."
+  },
+  "assets": [
+    {
+      "asset": "/Game/Sample/BP_Coin",
+      "create": {
+        "kind": "blueprint",
+        "parent": "/Script/Engine.Actor"
+      },
+      "ops": [
+        {
+          "op": "remove_node",
+          "node": {
+            "class": "K2Node_Event",
+            "member": "ReceiveBeginPlay"
+          },
+          "note": "the ghost event a new Blueprint gets"
+        },
+        {
+          "op": "remove_node",
+          "node": {
+            "class": "K2Node_Event",
+            "member": "ReceiveTick"
+          },
+          "note": "the ghost event a new Blueprint gets"
+        },
+        {
+          "op": "add_component",
+          "class": "/Script/Engine.SphereComponent",
+          "name": "Collision"
+        },
+        {
+          "op": "set_root_component",
+          "name": "Collision"
+        },
+        {
+          "op": "add_component",
+          "class": "/Script/Engine.StaticMeshComponent",
+          "name": "Mesh",
+          "parent": "Collision"
+        },
+        {
+          "op": "set_component_property",
+          "component": "Mesh",
+          "property": "StaticMesh",
+          "text": "/Engine/BasicShapes/Cylinder.Cylinder"
+        },
+        {
+          "op": "set_component_property",
+          "component": "Mesh",
+          "property": "RelativeScale3D",
+          "text": "(X=0.6,Y=0.6,Z=0.1)"
+        },
+        {
+          "op": "add_variable",
+          "name": "CoinType",
+          "type": {
+            "category": "byte",
+            "sub_category_object": "/Game/Sample/Data/E_CoinType.E_CoinType"
+          },
+          "instance_editable": true,
+          "category": "Coin"
+        },
+        {
+          "op": "add_function",
+          "id": "points",
+          "name": "GetPoints",
+          "outputs": [
+            {
+              "name": "Points",
+              "type": {
+                "category": "int"
+              }
+            }
+          ],
+          "pure": true,
+          "category": "Coin"
+        },
+        {
+          "op": "spawn_node",
+          "id": "type",
+          "graph": "points",
+          "kind": "variable_get",
+          "variable": {
+            "name": "CoinType"
+          },
+          "pos": [
+            0,
+            200
+          ]
+        },
+        {
+          "op": "spawn_node",
+          "id": "isgold",
+          "graph": "points",
+          "kind": "generic",
+          "generic": {
+            "class": "K2Node_EnumEquality"
+          },
+          "pos": [
+            240,
+            200
+          ]
+        },
+        {
+          "op": "spawn_node",
+          "id": "pick",
+          "graph": "points",
+          "kind": "select",
+          "pos": [
+            560,
+            60
+          ]
+        },
+        {
+          "op": "move_node",
+          "node": "@points.result",
+          "pos": [
+            820,
+            0
+          ]
+        },
+        {
+          "op": "link",
+          "from": "@type:CoinType",
+          "to": "@isgold:A"
+        },
+        {
+          "op": "set_pin_default",
+          "pin": "@isgold:B",
+          "default_value": "NewEnumerator1"
+        },
+        {
+          "op": "link",
+          "from": "@pick:ReturnValue",
+          "to": "@points.result:Points"
+        },
+        {
+          "op": "link",
+          "from": "@isgold:ReturnValue",
+          "to": "@pick:Index"
+        },
+        {
+          "op": "set_pin_default",
+          "pin": "@pick:Option 1",
+          "default_value": "50"
+        },
+        {
+          "op": "set_pin_default",
+          "pin": "@pick:Option 0",
+          "default_value": "10"
+        },
+        {
+          "op": "spawn_node",
+          "id": "overlap",
+          "graph": "EventGraph",
+          "kind": "override_event",
+          "event": {
+            "name": "ReceiveActorBeginOverlap"
+          },
+          "pos": [
+            0,
+            0
+          ]
+        },
+        {
+          "op": "spawn_node",
+          "id": "mode",
+          "graph": "EventGraph",
+          "kind": "call_function",
+          "function": {
+            "owner": "/Script/Engine.GameplayStatics",
+            "name": "GetGameMode"
+          },
+          "pos": [
+            0,
+            200
+          ]
+        },
+        {
+          "op": "spawn_node",
+          "id": "cast",
+          "graph": "EventGraph",
+          "kind": "cast",
+          "cast": {
+            "class": "/Game/Sample/BP_ScoreGameMode.BP_ScoreGameMode_C"
+          },
+          "pos": [
+            300,
+            0
+          ]
+        },
+        {
+          "op": "spawn_node",
+          "id": "getpoints",
+          "graph": "EventGraph",
+          "kind": "call_function",
+          "function": {
+            "name": "GetPoints"
+          },
+          "pos": [
+            560,
+            200
+          ]
+        },
+        {
+          "op": "spawn_node",
+          "id": "addscore",
+          "graph": "EventGraph",
+          "kind": "call_function",
+          "function": {
+            "owner": "/Game/Sample/BP_ScoreGameMode.BP_ScoreGameMode_C",
+            "name": "AddScore"
+          },
+          "pos": [
+            800,
+            0
+          ]
+        },
+        {
+          "op": "spawn_node",
+          "id": "destroy",
+          "graph": "EventGraph",
+          "kind": "call_function",
+          "function": {
+            "owner": "/Script/Engine.Actor",
+            "name": "K2_DestroyActor"
+          },
+          "pos": [
+            1100,
+            0
+          ]
+        },
+        {
+          "op": "link",
+          "from": "@overlap:then",
+          "to": "@cast:execute"
+        },
+        {
+          "op": "link",
+          "from": "@mode:ReturnValue",
+          "to": "@cast:Object"
+        },
+        {
+          "op": "link",
+          "from": "@cast:then",
+          "to": "@addscore:execute"
+        },
+        {
+          "op": "link",
+          "from": "@cast:AsBP Score Game Mode",
+          "to": "@addscore:self"
+        },
+        {
+          "op": "link",
+          "from": "@getpoints:Points",
+          "to": "@addscore:Points"
+        },
+        {
+          "op": "link",
+          "from": "@addscore:then",
+          "to": "@destroy:execute"
+        },
+        {
+          "op": "add_comment",
+          "graph": "EventGraph",
+          "text": "Pick up: score the coin's points, then remove it",
+          "around": [
+            "@overlap",
+            "@mode",
+            "@cast",
+            "@getpoints",
+            "@addscore",
+            "@destroy"
+          ]
+        }
+      ]
+    }
+  ]
+}

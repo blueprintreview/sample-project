@@ -1,0 +1,271 @@
+{
+  "schema": "BlueprintEditPlan/2",
+  "meta": {
+    "description": "The spawner: a coin every Interval seconds, around it.",
+    "commit": {
+      "message": "Add the coin collector: coin, spawner, score game mode and rewards data",
+      "author": [
+        "Alex Chen",
+        "alex@example.com"
+      ],
+      "date": "2026-10-05T10:00:00+13:00"
+    }
+  },
+  "assets": [
+    {
+      "asset": "/Game/Sample/BP_CoinSpawner",
+      "create": {
+        "kind": "blueprint",
+        "parent": "/Script/Engine.Actor"
+      },
+      "ops": [
+        {
+          "op": "remove_node",
+          "node": {
+            "class": "K2Node_Event",
+            "member": "ReceiveActorBeginOverlap"
+          },
+          "note": "the ghost event a new Blueprint gets"
+        },
+        {
+          "op": "remove_node",
+          "node": {
+            "class": "K2Node_Event",
+            "member": "ReceiveTick"
+          },
+          "note": "the ghost event a new Blueprint gets"
+        },
+        {
+          "op": "add_component",
+          "class": "/Script/Engine.BillboardComponent",
+          "name": "Icon"
+        },
+        {
+          "op": "add_variable",
+          "name": "CoinClass",
+          "type": {
+            "category": "class",
+            "sub_category_object": "/Game/Sample/BP_Coin.BP_Coin_C"
+          },
+          "default_value": "/Game/Sample/BP_Coin.BP_Coin_C",
+          "instance_editable": true,
+          "category": "Spawning"
+        },
+        {
+          "op": "add_variable",
+          "name": "Interval",
+          "type": {
+            "category": "real",
+            "sub_category": "double"
+          },
+          "default_value": "2.0",
+          "instance_editable": true,
+          "category": "Spawning",
+          "tooltip": "Seconds between coins."
+        },
+        {
+          "op": "add_function",
+          "id": "spawn",
+          "name": "SpawnCoin",
+          "category": "Spawning"
+        },
+        {
+          "op": "spawn_node",
+          "id": "here",
+          "graph": "spawn",
+          "kind": "call_function",
+          "function": {
+            "owner": "/Script/Engine.Actor",
+            "name": "K2_GetActorLocation"
+          },
+          "pos": [
+            0,
+            200
+          ]
+        },
+        {
+          "op": "spawn_node",
+          "id": "dir",
+          "graph": "spawn",
+          "kind": "call_function",
+          "function": {
+            "owner": "/Script/Engine.KismetMathLibrary",
+            "name": "RandomUnitVector"
+          },
+          "pos": [
+            0,
+            360
+          ]
+        },
+        {
+          "op": "spawn_node",
+          "id": "scale",
+          "graph": "spawn",
+          "kind": "call_function",
+          "function": {
+            "owner": "/Script/Engine.KismetMathLibrary",
+            "name": "Multiply_VectorFloat"
+          },
+          "pos": [
+            380,
+            360
+          ]
+        },
+        {
+          "op": "spawn_node",
+          "id": "offset",
+          "graph": "spawn",
+          "kind": "call_function",
+          "function": {
+            "owner": "/Script/Engine.KismetMathLibrary",
+            "name": "Add_VectorVector"
+          },
+          "pos": [
+            760,
+            240
+          ]
+        },
+        {
+          "op": "spawn_node",
+          "id": "xf",
+          "graph": "spawn",
+          "kind": "call_function",
+          "function": {
+            "owner": "/Script/Engine.KismetMathLibrary",
+            "name": "MakeTransform"
+          },
+          "pos": [
+            1060,
+            220
+          ]
+        },
+        {
+          "op": "spawn_node",
+          "id": "class",
+          "graph": "spawn",
+          "kind": "variable_get",
+          "variable": {
+            "name": "CoinClass"
+          },
+          "pos": [
+            1240,
+            100
+          ]
+        },
+        {
+          "op": "spawn_node",
+          "id": "make",
+          "graph": "spawn",
+          "kind": "generic",
+          "generic": {
+            "class": "K2Node_SpawnActorFromClass"
+          },
+          "pos": [
+            1600,
+            0
+          ]
+        },
+        {
+          "op": "link",
+          "from": "@dir:ReturnValue",
+          "to": "@scale:A"
+        },
+        {
+          "op": "set_pin_default",
+          "pin": "@scale:B",
+          "default_value": "500.0"
+        },
+        {
+          "op": "link",
+          "from": "@here:ReturnValue",
+          "to": "@offset:A"
+        },
+        {
+          "op": "link",
+          "from": "@scale:ReturnValue",
+          "to": "@offset:B"
+        },
+        {
+          "op": "link",
+          "from": "@offset:ReturnValue",
+          "to": "@xf:Location"
+        },
+        {
+          "op": "link",
+          "from": "@class:CoinClass",
+          "to": "@make:Class"
+        },
+        {
+          "op": "link",
+          "from": "@xf:ReturnValue",
+          "to": "@make:SpawnTransform"
+        },
+        {
+          "op": "link",
+          "from": "@spawn.entry:then",
+          "to": "@make:execute"
+        },
+        {
+          "op": "spawn_node",
+          "id": "begin",
+          "graph": "EventGraph",
+          "kind": "override_event",
+          "event": {
+            "name": "ReceiveBeginPlay"
+          },
+          "pos": [
+            0,
+            0
+          ]
+        },
+        {
+          "op": "spawn_node",
+          "id": "interval",
+          "graph": "EventGraph",
+          "kind": "variable_get",
+          "variable": {
+            "name": "Interval"
+          },
+          "pos": [
+            40,
+            200
+          ]
+        },
+        {
+          "op": "spawn_node",
+          "id": "timer",
+          "graph": "EventGraph",
+          "kind": "call_function",
+          "function": {
+            "owner": "/Script/Engine.KismetSystemLibrary",
+            "name": "K2_SetTimer"
+          },
+          "pos": [
+            300,
+            0
+          ]
+        },
+        {
+          "op": "link",
+          "from": "@begin:then",
+          "to": "@timer:execute"
+        },
+        {
+          "op": "set_pin_default",
+          "pin": "@timer:FunctionName",
+          "default_value": "SpawnCoin"
+        },
+        {
+          "op": "link",
+          "from": "@interval:Interval",
+          "to": "@timer:Time"
+        },
+        {
+          "op": "set_pin_default",
+          "pin": "@timer:bLooping",
+          "default_value": "true"
+        }
+      ]
+    }
+  ]
+}
