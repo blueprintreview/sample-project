@@ -1,0 +1,61 @@
+{
+  "schema": "BlueprintEditPlan/2",
+  "meta": {
+    "description": "A SpawnRadius setting replaces the fixed 500.",
+    "commit": {
+      "message": "Spawner: SpawnRadius setting instead of the fixed 500",
+      "author": [
+        "Sam Rivera",
+        "sam@example.com"
+      ],
+      "date": "2026-10-06T14:20:00+13:00"
+    }
+  },
+  "assets": [
+    {
+      "asset": "/Game/Sample/BP_CoinSpawner",
+      "ops": [
+        {
+          "op": "add_variable",
+          "name": "SpawnRadius",
+          "type": {
+            "category": "real",
+            "sub_category": "double"
+          },
+          "default_value": "500.0",
+          "instance_editable": true,
+          "category": "Spawning",
+          "tooltip": "How far from the spawner coins appear."
+        },
+        {
+          "op": "spawn_node",
+          "id": "radius",
+          "graph": "SpawnCoin",
+          "kind": "variable_get",
+          "variable": {
+            "name": "SpawnRadius"
+          },
+          "near": {
+            "node": {
+              "class": "K2Node_CallFunction",
+              "member": "Multiply_VectorFloat"
+            },
+            "dx": -40,
+            "dy": 120
+          }
+        },
+        {
+          "op": "link",
+          "from": "@radius:SpawnRadius",
+          "to": {
+            "node": {
+              "class": "K2Node_CallFunction",
+              "member": "Multiply_VectorFloat"
+            },
+            "pin": "B"
+          }
+        }
+      ]
+    }
+  ]
+}
