@@ -1,0 +1,22 @@
+{
+  "schema": "BlueprintEditPlan/2",
+  "meta": {
+    "description": "A Silver coin type, between Bronze and Gold."
+  },
+  "assets": [
+    {
+      "asset": "/Game/Sample/Data/E_CoinType",
+      "ops": [
+        {
+          "op": "add_enumerator",
+          "name": "Silver"
+        },
+        {
+          "op": "move_enumerator",
+          "name": "Silver",
+          "index": 1
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "schema": "BlueprintEditPlan/2",
+  "meta": {
+    "description": "GetPoints selects the points by coin type instead of checking for Gold.",
+    "commit": {
+      "message": "Coin: Silver coins; GetPoints selects the points by coin type",
+      "author": [
+        "Alex Chen",
+        "alex@example.com"
+      ],
+      "date": "2026-10-07T09:45:00+13:00"
+    }
+  },
+  "assets": [
+    {
+      "asset": "/Game/Sample/BP_Coin",
+      "ops": [
+        {
+          "op": "remove_node",
+          "node": {
+            "class": "K2Node_EnumEquality",
+            "graph": "GetPoints"
+          }
+        },
+        {
+          "op": "remove_node",
+          "node": {
+            "class": "K2Node_Select",
+            "graph": "GetPoints"
+          }
+        },
+        {
+          "op": "spawn_node",
+          "id": "pick",
+          "graph": "GetPoints",
+          "kind": "select",
+          "pos": [
+            300,
+            120
+          ]
+        },
+        {
+          "op": "link",
+          "from": "@pick:ReturnValue",
+          "to": {
+            "node": {
+              "class": "K2Node_FunctionResult",
+              "graph": "GetPoints"
+            },
+            "pin": "Points"
+          }
+        },
+        {
+          "op": "link",
+          "from": {
+            "node": {
+              "class": "K2Node_VariableGet",
+              "member": "CoinType",
+              "graph": "GetPoints"
+            },
+            "pin": "CoinType"
+          },
+          "to": "@pick:Index"
+        },
+        {
+          "op": "refresh_nodes",
+          "node": "@pick",
+          "note": "the options become the enum's entries, as the editor rebuilds the node"
+        },
+        {
+          "op": "set_pin_default",
+          "pin": "@pick:Bronze",
+          "default_value": "10"
+        },
+        {
+          "op": "set_pin_default",
+          "pin": "@pick:Silver",
+          "default_value": "25"
+        },
+        {
+          "op": "set_pin_default",
+          "pin": "@pick:Gold",
+          "default_value": "50"
+        }
+      ]
+    }
+  ]
+}
