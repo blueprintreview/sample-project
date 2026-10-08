@@ -1,0 +1,54 @@
+{
+  "schema": "BlueprintEditPlan/2",
+  "meta": {
+    "description": "Nodes moved only: the pick-up graph lined up. No behaviour change.",
+    "commit": {
+      "message": "Coin: tidy the pick-up graph",
+      "author": [
+        "Alex Chen",
+        "alex@example.com"
+      ],
+      "date": "2026-10-09T11:30:00+13:00"
+    }
+  },
+  "assets": [
+    {
+      "asset": "/Game/Sample/BP_Coin",
+      "ops": [
+        {
+          "op": "move_node",
+          "node": {
+            "class": "K2Node_CallFunction",
+            "member": "GetGameMode"
+          },
+          "by": [
+            120,
+            0
+          ]
+        },
+        {
+          "op": "move_node",
+          "node": {
+            "class": "K2Node_CallFunction",
+            "member": "GetPoints"
+          },
+          "by": [
+            80,
+            -40
+          ]
+        },
+        {
+          "op": "move_node",
+          "node": {
+            "class": "K2Node_CallFunction",
+            "member": "K2_DestroyActor"
+          },
+          "by": [
+            40,
+            0
+          ]
+        }
+      ]
+    }
+  ]
+}
