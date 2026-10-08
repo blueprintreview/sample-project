@@ -1,0 +1,44 @@
+{
+  "schema": "BlueprintEditPlan/2",
+  "meta": {
+    "description": "The coin spins (a RotatingMovement component) and gets a little smaller.",
+    "commit": {
+      "message": "Coin: spin with a RotatingMovement component, smaller mesh",
+      "author": [
+        "Sam Rivera",
+        "sam@example.com"
+      ],
+      "date": "2026-10-08T16:05:00+13:00"
+    }
+  },
+  "assets": [
+    {
+      "asset": "/Game/Sample/BP_Coin",
+      "ops": [
+        {
+          "op": "add_component",
+          "class": "/Script/Engine.RotatingMovementComponent",
+          "name": "Spin"
+        },
+        {
+          "op": "set_component_property",
+          "component": "Spin",
+          "property": "RotationRate",
+          "text": "(Pitch=0.000000,Yaw=180.000000,Roll=0.000000)"
+        },
+        {
+          "op": "set_component_property",
+          "component": "Mesh",
+          "property": "RelativeScale3D",
+          "text": "(X=0.500000,Y=0.500000,Z=0.080000)"
+        },
+        {
+          "op": "set_component_property",
+          "component": "Collision",
+          "property": "SphereRadius",
+          "text": "40.000000"
+        }
+      ]
+    }
+  ]
+}
