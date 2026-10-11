@@ -1,0 +1,37 @@
+{
+  "schema": "BlueprintEditPlan/2",
+  "meta": {
+    "description": "The transform wire goes through a reroute node. Same connections.",
+    "commit": {
+      "message": "Spawner: route the transform wire through a reroute node",
+      "author": [
+        "Sam Rivera",
+        "sam@example.com"
+      ],
+      "date": "2026-10-12T10:10:00+13:00"
+    }
+  },
+  "assets": [
+    {
+      "asset": "/Game/Sample/BP_CoinSpawner",
+      "ops": [
+        {
+          "op": "insert_reroute",
+          "from": {
+            "node": {
+              "class": "K2Node_CallFunction",
+              "member": "MakeTransform"
+            },
+            "pin": "ReturnValue"
+          },
+          "to": {
+            "node": {
+              "class": "K2Node_SpawnActorFromClass"
+            },
+            "pin": "SpawnTransform"
+          }
+        }
+      ]
+    }
+  ]
+}
