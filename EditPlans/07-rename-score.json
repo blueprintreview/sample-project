@@ -1,0 +1,26 @@
+{
+  "schema": "BlueprintEditPlan/2",
+  "meta": {
+    "description": "Score is renamed TotalScore; the nodes using it follow.",
+    "commit": {
+      "message": "Game mode: rename Score to TotalScore",
+      "author": [
+        "Alex Chen",
+        "alex@example.com"
+      ],
+      "date": "2026-10-13T15:00:00+13:00"
+    }
+  },
+  "assets": [
+    {
+      "asset": "/Game/Sample/BP_ScoreGameMode",
+      "ops": [
+        {
+          "op": "rename_variable",
+          "from": "Score",
+          "to": "TotalScore"
+        }
+      ]
+    }
+  ]
+}
