@@ -1,0 +1,48 @@
+{
+  "schema": "BlueprintEditPlan/2",
+  "meta": {
+    "description": "The rewards table: Bronze worth less, Gold worth more, a Silver row.",
+    "commit": {
+      "message": "Rewards: rebalance the points, add the Silver row",
+      "author": [
+        "Sam Rivera",
+        "sam@example.com"
+      ],
+      "date": "2026-10-14T13:40:00+13:00"
+    }
+  },
+  "assets": [
+    {
+      "asset": "/Game/Sample/Data/DT_CoinRewards",
+      "ops": [
+        {
+          "op": "set_row",
+          "name": "Bronze",
+          "fields": {
+            "Points": 5
+          }
+        },
+        {
+          "op": "set_row",
+          "name": "Gold",
+          "fields": {
+            "Points": 100
+          }
+        },
+        {
+          "op": "add_row",
+          "name": "Silver",
+          "fields": {
+            "Points": 25,
+            "Label": "Silver coin"
+          }
+        },
+        {
+          "op": "move_row",
+          "name": "Silver",
+          "index": 1
+        }
+      ]
+    }
+  ]
+}
