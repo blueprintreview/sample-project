@@ -1,0 +1,30 @@
+{
+  "schema": "BlueprintEditPlan/2",
+  "meta": {
+    "description": "A Platinum coin type and its reward row."
+  },
+  "assets": [
+    {
+      "asset": "/Game/Sample/Data/E_CoinType",
+      "ops": [
+        {
+          "op": "add_enumerator",
+          "name": "Platinum"
+        }
+      ]
+    },
+    {
+      "asset": "/Game/Sample/Data/DT_CoinRewards",
+      "ops": [
+        {
+          "op": "add_row",
+          "name": "Platinum",
+          "fields": {
+            "Points": 250,
+            "Label": "Platinum coin"
+          }
+        }
+      ]
+    }
+  ]
+}

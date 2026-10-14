@@ -1,0 +1,39 @@
+{
+  "schema": "BlueprintEditPlan/2",
+  "meta": {
+    "description": "GetPoints gets the Platinum option.",
+    "commit": {
+      "message": "Add the Platinum coin",
+      "author": [
+        "Alex Chen",
+        "alex@example.com"
+      ],
+      "date": "2026-10-15T10:25:00+13:00"
+    }
+  },
+  "assets": [
+    {
+      "asset": "/Game/Sample/BP_Coin",
+      "ops": [
+        {
+          "op": "refresh_nodes",
+          "node": {
+            "class": "K2Node_Select",
+            "graph": "GetPoints"
+          }
+        },
+        {
+          "op": "set_pin_default",
+          "pin": {
+            "node": {
+              "class": "K2Node_Select",
+              "graph": "GetPoints"
+            },
+            "pin": "Platinum"
+          },
+          "default_value": "250"
+        }
+      ]
+    }
+  ]
+}
