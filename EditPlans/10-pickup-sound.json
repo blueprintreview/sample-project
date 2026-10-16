@@ -1,0 +1,34 @@
+{
+  "schema": "BlueprintEditPlan/2",
+  "meta": {
+    "description": "Rewards get a pick-up sound field.",
+    "commit": {
+      "message": "Rewards: a pick-up sound per reward",
+      "author": [
+        "Sam Rivera",
+        "sam@example.com"
+      ],
+      "date": "2026-10-16T17:15:00+13:00"
+    }
+  },
+  "assets": [
+    {
+      "asset": "/Game/Sample/Data/S_CoinReward",
+      "ops": [
+        {
+          "op": "add_struct_field",
+          "name": "PickupSound",
+          "type": {
+            "category": "softobject",
+            "sub_category_object": "/Script/Engine.SoundBase"
+          }
+        },
+        {
+          "op": "set_struct_field",
+          "name": "PickupSound",
+          "tooltip": "Played when a coin of this reward is collected."
+        }
+      ]
+    }
+  ]
+}
