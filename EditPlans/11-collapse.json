@@ -1,0 +1,44 @@
+{
+  "schema": "BlueprintEditPlan/2",
+  "meta": {
+    "description": "The scoring nodes of the pick-up move into a ScoreCoin function.",
+    "commit": {
+      "message": "Coin: move the scoring into a ScoreCoin function",
+      "author": [
+        "Alex Chen",
+        "alex@example.com"
+      ],
+      "date": "2026-10-19T09:00:00+13:00"
+    }
+  },
+  "assets": [
+    {
+      "asset": "/Game/Sample/BP_Coin",
+      "ops": [
+        {
+          "op": "collapse_nodes",
+          "id": "score",
+          "nodes": [
+            {
+              "class": "K2Node_CallFunction",
+              "member": "GetGameMode"
+            },
+            {
+              "class": "K2Node_DynamicCast"
+            },
+            {
+              "class": "K2Node_CallFunction",
+              "member": "GetPoints"
+            },
+            {
+              "class": "K2Node_CallFunction",
+              "member": "AddScore"
+            }
+          ],
+          "into": "function",
+          "name": "ScoreCoin"
+        }
+      ]
+    }
+  ]
+}
