@@ -1,0 +1,69 @@
+{
+  "schema": "BlueprintEditPlan/2",
+  "meta": {
+    "description": "Comments on the spawner's graphs.",
+    "commit": {
+      "message": "Spawner: comment the timer and the spawn position",
+      "author": [
+        "Sam Rivera",
+        "sam@example.com"
+      ],
+      "date": "2026-10-20T12:30:00+13:00"
+    }
+  },
+  "assets": [
+    {
+      "asset": "/Game/Sample/BP_CoinSpawner",
+      "ops": [
+        {
+          "op": "add_comment",
+          "graph": "EventGraph",
+          "text": "Spawn a coin every Interval seconds",
+          "around": [
+            {
+              "class": "K2Node_Event",
+              "member": "ReceiveBeginPlay"
+            },
+            {
+              "class": "K2Node_VariableGet",
+              "member": "Interval",
+              "graph": "EventGraph"
+            },
+            {
+              "class": "K2Node_CallFunction",
+              "member": "K2_SetTimer"
+            }
+          ]
+        },
+        {
+          "op": "add_comment",
+          "graph": "SpawnCoin",
+          "text": "A random point SpawnRadius away",
+          "around": [
+            {
+              "class": "K2Node_CallFunction",
+              "member": "K2_GetActorLocation"
+            },
+            {
+              "class": "K2Node_CallFunction",
+              "member": "RandomUnitVector"
+            },
+            {
+              "class": "K2Node_CallFunction",
+              "member": "Multiply_VectorFloat"
+            },
+            {
+              "class": "K2Node_CallFunction",
+              "member": "Add_VectorVector"
+            },
+            {
+              "class": "K2Node_VariableGet",
+              "member": "SpawnRadius",
+              "graph": "SpawnCoin"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
