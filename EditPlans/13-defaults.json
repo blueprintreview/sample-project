@@ -1,0 +1,31 @@
+{
+  "schema": "BlueprintEditPlan/2",
+  "meta": {
+    "description": "Faster spawns, further out, by default.",
+    "commit": {
+      "message": "Spawner: spawn every 1.5 s, up to 800 units away",
+      "author": [
+        "Alex Chen",
+        "alex@example.com"
+      ],
+      "date": "2026-10-21T14:50:00+13:00"
+    }
+  },
+  "assets": [
+    {
+      "asset": "/Game/Sample/BP_CoinSpawner",
+      "ops": [
+        {
+          "op": "set_variable_default",
+          "name": "Interval",
+          "text": "1.5"
+        },
+        {
+          "op": "set_variable_default",
+          "name": "SpawnRadius",
+          "text": "800.0"
+        }
+      ]
+    }
+  ]
+}
