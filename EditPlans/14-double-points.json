@@ -1,0 +1,111 @@
+{
+  "schema": "BlueprintEditPlan/2",
+  "meta": {
+    "description": "AddScore doubles the points while bDoublePoints is set.",
+    "commit": {
+      "message": "Game mode: double points while bDoublePoints is set",
+      "author": [
+        "Sam Rivera",
+        "sam@example.com"
+      ],
+      "date": "2026-10-22T10:00:00+13:00",
+      "branch": "feature/double-points"
+    }
+  },
+  "assets": [
+    {
+      "asset": "/Game/Sample/BP_ScoreGameMode",
+      "ops": [
+        {
+          "op": "add_variable",
+          "name": "bDoublePoints",
+          "type": {
+            "category": "bool"
+          },
+          "category": "Score",
+          "tooltip": "Coins score twice while set."
+        },
+        {
+          "op": "spawn_node",
+          "id": "flag",
+          "graph": "AddScore",
+          "kind": "variable_get",
+          "variable": {
+            "name": "bDoublePoints"
+          },
+          "pos": [
+            0,
+            360
+          ]
+        },
+        {
+          "op": "spawn_node",
+          "id": "factor",
+          "graph": "AddScore",
+          "kind": "select",
+          "pos": [
+            220,
+            340
+          ]
+        },
+        {
+          "op": "spawn_node",
+          "id": "times",
+          "graph": "AddScore",
+          "kind": "call_function",
+          "function": {
+            "owner": "/Script/Engine.KismetMathLibrary",
+            "name": "Multiply_IntInt"
+          },
+          "pos": [
+            440,
+            260
+          ]
+        },
+        {
+          "op": "link",
+          "from": "@factor:ReturnValue",
+          "to": "@times:B"
+        },
+        {
+          "op": "link",
+          "from": "@flag:bDoublePoints",
+          "to": "@factor:Index"
+        },
+        {
+          "op": "set_pin_default",
+          "pin": "@factor:Option 0",
+          "default_value": "1"
+        },
+        {
+          "op": "set_pin_default",
+          "pin": "@factor:Option 1",
+          "default_value": "2"
+        },
+        {
+          "op": "link",
+          "from": {
+            "node": {
+              "class": "K2Node_FunctionEntry",
+              "graph": "AddScore"
+            },
+            "pin": "Points"
+          },
+          "to": "@times:A"
+        },
+        {
+          "op": "link",
+          "from": "@times:ReturnValue",
+          "to": {
+            "node": {
+              "class": "K2Node_CallFunction",
+              "member": "Add_IntInt"
+            },
+            "pin": "A"
+          },
+          "replace": true
+        }
+      ]
+    }
+  ]
+}
