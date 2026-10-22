@@ -1,0 +1,116 @@
+{
+  "schema": "BlueprintEditPlan/2",
+  "meta": {
+    "description": "A StartDoublePoints event turns double points on for 30 seconds.",
+    "commit": {
+      "message": "Game mode: StartDoublePoints event, 30 seconds of double points",
+      "author": [
+        "Sam Rivera",
+        "sam@example.com"
+      ],
+      "date": "2026-10-23T11:20:00+13:00",
+      "branch": "feature/double-points"
+    }
+  },
+  "assets": [
+    {
+      "asset": "/Game/Sample/BP_ScoreGameMode",
+      "ops": [
+        {
+          "op": "spawn_node",
+          "id": "start",
+          "graph": "EventGraph",
+          "kind": "custom_event",
+          "event": {
+            "name": "StartDoublePoints"
+          },
+          "pos": [
+            0,
+            0
+          ]
+        },
+        {
+          "op": "spawn_node",
+          "id": "on",
+          "graph": "EventGraph",
+          "kind": "variable_set",
+          "variable": {
+            "name": "bDoublePoints"
+          },
+          "pos": [
+            300,
+            0
+          ]
+        },
+        {
+          "op": "spawn_node",
+          "id": "wait",
+          "graph": "EventGraph",
+          "kind": "call_function",
+          "function": {
+            "owner": "/Script/Engine.KismetSystemLibrary",
+            "name": "Delay"
+          },
+          "pos": [
+            600,
+            0
+          ]
+        },
+        {
+          "op": "spawn_node",
+          "id": "off",
+          "graph": "EventGraph",
+          "kind": "variable_set",
+          "variable": {
+            "name": "bDoublePoints"
+          },
+          "pos": [
+            900,
+            0
+          ]
+        },
+        {
+          "op": "link",
+          "from": "@start:then",
+          "to": "@on:execute"
+        },
+        {
+          "op": "set_pin_default",
+          "pin": "@on:bDoublePoints",
+          "default_value": "true"
+        },
+        {
+          "op": "link",
+          "from": "@on:then",
+          "to": "@wait:execute"
+        },
+        {
+          "op": "set_pin_default",
+          "pin": "@wait:Duration",
+          "default_value": "30.0"
+        },
+        {
+          "op": "link",
+          "from": "@wait:Completed",
+          "to": "@off:execute"
+        },
+        {
+          "op": "set_pin_default",
+          "pin": "@off:bDoublePoints",
+          "default_value": "false"
+        },
+        {
+          "op": "add_comment",
+          "graph": "EventGraph",
+          "text": "Double points for 30 seconds",
+          "around": [
+            "@start",
+            "@on",
+            "@wait",
+            "@off"
+          ]
+        }
+      ]
+    }
+  ]
+}
